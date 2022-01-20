@@ -1,0 +1,24 @@
+{
+  "name": "alkemy-challenge-node",
+  "version": "1.0.0",
+  "description": "Alkemi challenge develop a disney API",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "npx nodemon src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Rodrigo",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^14.2.0",
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "winston": "^3.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
