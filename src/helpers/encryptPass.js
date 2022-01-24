@@ -5,7 +5,7 @@ const encryptPass = async (pass) => {
   return await bcrypt.hash(pass, saltRounds);
 };
 
-const comparePass = async (userPass, pass) => {
+const comparePass = async (pass, userPass) => {
   return await bcrypt.compare(pass, userPass);
 };
 

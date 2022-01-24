@@ -5,6 +5,7 @@ const config = require("../../config");
 class ServerExpress {
   constructor() {
     this.app = express();
+    this.basePathUser = `${config.api.prefix}auth`;
     this.basePathCharacter = `${config.api.prefix}character`;
     this.port = config.port;
 
@@ -17,9 +18,12 @@ class ServerExpress {
 
   _middleware() {
     this.app.use(morgan("tiny"));
+    this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(express.json());
   }
 
   _routes() {
+    this.app.use(this.basePathUser, require("../../routes/users"));
     this.app.use(this.basePathCharacter, require("../../routes/characters"));
   }
 

@@ -5,7 +5,7 @@ const start = async () => {
   console.log("LOADING.....");
   const server = new ServerExpress();
   server.start();
-  console.log("SERVER STARTED..");
+  console.log("SERVER STARTED.");
   console.log("*******************");
   console.log("- ROUTES:");
 };

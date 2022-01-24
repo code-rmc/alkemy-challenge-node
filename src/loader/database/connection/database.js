@@ -1,25 +1,28 @@
 const config = require("../../../config");
 
 module.exports = {
-  /*development: {
+  development: {
     username: config.db.user,
     password: config.db.pass,
-    database: config.db.name + "database_development",
-    host: "127.0.0.1",
+    database: config.db.name,
+    host: config.db.host,
+    port: config.db.port,
     dialect: "mysql",
   },
-  test: {
+  /*test: {
     username: config.db.user,
     password: config.db.pass,
-    database: config.db.name + "database_test",
-    host: "127.0.0.1",
+    database: config.db.name,
+    host: config.db.host,
+    port: config.db.port,
     dialect: "mysql",
   },*/
   production: {
     username: config.db.user,
     password: config.db.pass,
-    database: config.db.name + "database_production",
-    host: "127.0.0.1",
+    database: config.db.name,
+    host: config.db.host,
+    port: config.db.port,
     dialect: "mysql",
   },
 };
