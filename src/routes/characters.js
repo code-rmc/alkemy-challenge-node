@@ -1,11 +1,14 @@
 const { Router } = require("express");
-const { getCharacter } = require("../controller/characterControllers");
+const {
+  getCharacter,
+  createCharacter,
+} = require("../controller/characterController");
 
 const router = Router();
 
 router.get("/", getCharacter);
+router.post("/", createCharacter);
 /*
-router.post("/", );
 router.put("/:id", );
 router.delete("/:id", );
 */

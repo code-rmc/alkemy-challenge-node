@@ -1,9 +1,28 @@
-const { comparePass } = require("../helpers/encryptPass");
-const { generateJwt, verifyJwt } = require("../helpers/userJwt");
-const AppError = require("../errors/appError");
+const { comparePass, encryptPass } = require("../helpers/encryptPass");
+const { generateJwt } = require("../helpers/userJwt");
 const UserRepository = require("../repositories/userRepository");
+const AppError = require("../errors/appError");
+const { User } = require("../models/user");
 
 const userRepo = new UserRepository();
+
+/**
+ *
+ * @param {User} user
+ */
+const register = async (user) => {
+  user.password = await encryptPass(user.password);
+  return userRepo.create(user);
+};
+
+/**
+ *
+ * @param {String} email
+ * @returns {User} user
+ */
+const findByEmail = async (email) => {
+  return await userRepo.findEmail(email);
+};
 
 /**
  *
@@ -11,9 +30,9 @@ const userRepo = new UserRepository();
  * @param {String} password
  * @returns {String, String}
  */
-const checkUser = async (email, password) => {
+const loginkUser = async (email, password) => {
   try {
-    const user = await userRepo.findEmail(email);
+    const user = await findByEmail(email);
 
     if (!user) {
       throw new AppError(
@@ -43,5 +62,6 @@ const checkUser = async (email, password) => {
 };
 
 module.exports = {
-  checkUser,
+  loginkUser,
+  register,
 };
