@@ -1,10 +1,17 @@
 const { Request, Response } = require("express");
 const {
   getCharacter: getCharacterServices,
+  findCharacterMovies: findCharacterMoviesServices,
   saveCharacter,
 } = require("../services/characterService");
 
-const getCharacter = async (req = Request, res = Response, next) => {
+/**
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @param {} next
+ */
+const getCharacter = async (req, res, next) => {
   try {
     const characters = await getCharacterServices();
     res.json(characters);
@@ -23,7 +30,25 @@ const createCharacter = async (req, res, next) => {
   }
 };
 
+/**
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @param {} next
+ */
+const findCharacterMovies = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const movies = await findCharacterMoviesServices(id);
+    res.json(movies);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getCharacter,
   createCharacter,
+  findCharacterMovies,
 };

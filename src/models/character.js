@@ -10,14 +10,15 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Character.belongsToMany(models.Movie, {
-        through: "character_movie",
+        through: "Characters_Movies",
+        foreignKey: "idCharacter",
       });
     }
   }
   Character.init(
     {
       name: DataTypes.STRING,
-      age: DataTypes.INTEGER,
+      age: DataTypes.STRING,
       weight: DataTypes.DECIMAL,
       history: DataTypes.TEXT,
       picture: DataTypes.STRING,

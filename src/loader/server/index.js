@@ -7,6 +7,7 @@ class ServerExpress {
     this.app = express();
     this.basePathUser = `${config.api.prefix}auth`;
     this.basePathCharacter = `${config.api.prefix}character`;
+    this.basePathMovie = `${config.api.prefix}movie`;
     this.port = config.port;
 
     // Agregar cors - winston - swagger
@@ -25,6 +26,7 @@ class ServerExpress {
   _routes() {
     this.app.use(this.basePathUser, require("../../routes/users"));
     this.app.use(this.basePathCharacter, require("../../routes/characters"));
+    this.app.use(this.basePathMovie, require("../../routes/movie"));
   }
 
   _notFound() {

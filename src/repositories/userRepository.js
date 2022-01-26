@@ -1,9 +1,15 @@
 const BaseRepository = require("./baseRepository");
-const db = require("../models").sequelize.models;
+const { User } = require("../models");
 
 class UserRepository extends BaseRepository {
   constructor() {
-    super(db, "User");
+    super(User);
+  }
+
+  async findEmail(email) {
+    return await this.model.findOne({
+      where: { email: email },
+    });
   }
 }
 

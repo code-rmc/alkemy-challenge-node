@@ -1,35 +1,28 @@
 class BaseRepository {
-  constructor(dbModels, model) {
-    this.db = dbModels;
-    this.model = model;
+  constructor(dbModels) {
+    this.model = dbModels;
   }
 
   async getAll() {
-    return await this.db[this.model].findAll();
+    return await this.model.findAll();
   }
 
   async getId(id) {
-    return await this.db[this.model].find({ where: { id } });
-  }
-
-  async findEmail(email) {
-    return await this.db[this.model].findOne({
-      where: { email: email },
-    });
+    return await this.model.find({ where: { id } });
   }
 
   async create(date) {
-    return await this.db[this.model].create(date);
+    return await this.model.create(date);
   }
 
   async update(id, date) {
-    return await this.db[this.model].update(date, {
+    return await this.model.update(date, {
       where: { id },
     });
   }
 
   async delete(id) {
-    return await this.db[this.model].destroy({
+    return await this.model.destroy({
       where: { id },
     });
   }
