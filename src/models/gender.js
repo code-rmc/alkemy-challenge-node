@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Gender.init(
     {
-      gender: DataTypes.STRING,
+      gender: DataTypes.STRING(50),
     },
     {
       sequelize,

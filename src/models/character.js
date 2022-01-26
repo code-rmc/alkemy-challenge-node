@@ -17,8 +17,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Character.init(
     {
-      name: DataTypes.STRING,
-      age: DataTypes.STRING,
+      name: DataTypes.STRING(50),
+      age: DataTypes.STRING(50),
       weight: DataTypes.DECIMAL,
       history: DataTypes.TEXT,
       picture: DataTypes.STRING,

@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
-      userName: DataTypes.STRING,
-      email: DataTypes.STRING,
+      userName: DataTypes.STRING(50),
+      email: DataTypes.STRING(80),
       password: DataTypes.STRING,
       enable: DataTypes.BOOLEAN,
     },

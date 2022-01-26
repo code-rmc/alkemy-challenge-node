@@ -9,10 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
-        type: Sequelize.STRING,
+        allowNull: false,
+        type: Sequelize.STRING(50),
       },
       age: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
       },
       weight: {
         type: Sequelize.DECIMAL,
@@ -21,6 +22,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       picture: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       createdAt: {

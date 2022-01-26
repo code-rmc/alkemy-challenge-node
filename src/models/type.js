@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Type.init(
     {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50),
     },
     {
       sequelize,
