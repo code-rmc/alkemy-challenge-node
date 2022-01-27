@@ -17,8 +17,8 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "idMovie",
       });
       // n:n
-      Movie.belongsToMany(models.Gender, {
-        through: "Genders_Movies",
+      Movie.belongsToMany(models.Genre, {
+        through: "Genre_Movies",
         foreignKey: "idMovie",
       });
     }

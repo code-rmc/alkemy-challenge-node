@@ -1,16 +1,21 @@
-const movieRepository = require("../repositories/movieRepository");
+const MovieRepository = require("../repositories/movieRepository");
 
-const movieRepo = new movieRepository();
+const movieRepo = new MovieRepository();
 
-const getMovies = async () => {
+const findAllMovies = async () => {
   return await movieRepo.getAll();
 };
 
-const saveMovie = async (movie) => {
+const findById = async (id) => {
+  return await movieRepo.findById(id);
+};
+
+const createMovie = async (movie) => {
   return await movieRepo.create(movie);
 };
 
 module.exports = {
-  getMovies,
-  saveMovie,
+  findAllMovies,
+  findById,
+  createMovie,
 };

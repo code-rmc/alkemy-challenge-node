@@ -2,20 +2,29 @@ const CharacterRepository = require("../repositories/characterRepository");
 
 const characterRepo = new CharacterRepository();
 
-const getCharacter = async () => {
+const findAllCharacters = async () => {
   return await characterRepo.getAll();
-};
-
-const saveCharacter = async (character) => {
-  return await characterRepo.create(character);
 };
 
 const findCharacterMovies = async (id) => {
   return await characterRepo.findCharacter(id);
 };
 
+const findCharacterFilter = async (name, filter) => {
+  return await characterRepo.findCharacter(id);
+};
+
+const saveCharacter = async (character) => {
+  return await characterRepo.create(character);
+};
+
+const removeUser = async (id) => {
+  return await characterRepo.delete(id);
+};
+
 module.exports = {
-  getCharacter,
-  saveCharacter,
+  findAllCharacters,
   findCharacterMovies,
+  saveCharacter,
+  removeUser,
 };

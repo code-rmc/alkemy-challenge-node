@@ -1,25 +1,32 @@
-const { Request, Response } = require("express");
+const express = require("express");
 const {
-  getCharacter: getCharacterServices,
-  findCharacterMovies: findCharacterMoviesServices,
+  findAllCharacters,
+  findCharacterMovies,
   saveCharacter,
+  removeUser,
 } = require("../services/characterService");
 
 /**
  *
- * @param {Request} req
- * @param {Response} res
- * @param {} next
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
  */
-const getCharacter = async (req, res, next) => {
+const getCharacters = async (req, res, next) => {
   try {
-    const characters = await getCharacterServices();
+    const characters = await findAllCharacters();
     res.json(characters);
   } catch (error) {
     next(error);
   }
 };
 
+/**
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
 const createCharacter = async (req, res, next) => {
   try {
     const character = req.body;
@@ -32,23 +39,40 @@ const createCharacter = async (req, res, next) => {
 
 /**
  *
- * @param {Request} req
- * @param {Response} res
- * @param {} next
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
  */
-const findCharacterMovies = async (req, res, next) => {
+const getCharacterMovies = async (req, res, next) => {
   try {
     const { id } = req.params;
     console.log(id);
-    const movies = await findCharacterMoviesServices(id);
+    const movies = await findCharacterMovies(id);
     res.json(movies);
   } catch (error) {
     next(error);
   }
 };
 
+/**
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
+const deleteUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const user = await removeUser(id);
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
-  getCharacter,
+  getCharacters,
   createCharacter,
-  findCharacterMovies,
+  getCharacterMovies,
+  deleteUser,
 };

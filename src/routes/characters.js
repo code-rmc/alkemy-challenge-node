@@ -1,18 +1,22 @@
 const { Router } = require("express");
 const {
-  getCharacter,
+  getCharacters,
+  getCharacterMovies,
   createCharacter,
-  findCharacterMovies,
+  deleteUser,
 } = require("../controller/characterController");
-
+const {
+  postValidationCharacter,
+  deleteValidationCharacter,
+} = require("../middleware/character/character");
 const router = Router();
 
-router.get("/", getCharacter);
-router.get("/:id", findCharacterMovies);
-router.post("/", createCharacter);
+router.get("/", getCharacters);
+router.get("/:id", getCharacterMovies);
+router.post("/", postValidationCharacter, createCharacter);
+router.delete("/:id", deleteValidationCharacter, deleteUser);
 /*
 router.put("/:id", );
-router.delete("/:id", );
 */
 
 module.exports = router;

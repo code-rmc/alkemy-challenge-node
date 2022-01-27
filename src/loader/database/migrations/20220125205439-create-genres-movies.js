@@ -1,17 +1,29 @@
 "use strict";
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Genders", {
+    await queryInterface.createTable("Genres_Movies", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      gender: {
+      idMovie: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        type: Sequelize.STRING(50),
-        unique: true,
+        references: {
+          model: "Movies",
+          key: "id",
+        },
+      },
+      idGender: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Genres",
+          key: "id",
+        },
       },
       createdAt: {
         allowNull: false,
@@ -23,7 +35,8 @@ module.exports = {
       },
     });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Genders");
+    await queryInterface.dropTable("Genres_Movies");
   },
 };

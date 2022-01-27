@@ -8,7 +8,7 @@ class UserRepository extends BaseRepository {
 
   async findEmail(email) {
     return await this.model.findOne({
-      where: { email: email },
+      where: { email },
     });
   }
 }

@@ -1,4 +1,5 @@
 "use strict";
+const { ROLES } = require("../../../constant/userRoles");
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("Users", {
@@ -24,6 +25,11 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: true,
       },
+      role: {
+        type: Sequelize.ENUM(ROLES),
+        defaultValue: ROLES[0],
+      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

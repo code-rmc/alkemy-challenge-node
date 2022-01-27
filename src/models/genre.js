@@ -1,23 +1,23 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Gender extends Model {
+  class Genre extends Model {
     static associate(models) {
       // define association here
-      Gender.belongsToMany(models.Movie, {
-        through: "Genders_Movies",
+      Genre.belongsToMany(models.Movie, {
+        through: "Genre_Movies",
         foreignKey: "idGender",
       });
     }
   }
-  Gender.init(
+  Genre.init(
     {
-      gender: DataTypes.STRING(50),
+      genre: DataTypes.STRING(50),
     },
     {
       sequelize,
-      modelName: "Gender",
+      modelName: "Genre",
     }
   );
-  return Gender;
+  return Genre;
 };

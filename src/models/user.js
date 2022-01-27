@@ -1,4 +1,5 @@
 "use strict";
+const { ROLES } = require("../constant/userRoles");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -17,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING(80),
       password: DataTypes.STRING,
       enable: DataTypes.BOOLEAN,
+      role: DataTypes.ENUM(ROLES),
     },
     {
       sequelize,

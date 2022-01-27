@@ -8,7 +8,7 @@ class BaseRepository {
   }
 
   async getId(id) {
-    return await this.model.find({ where: { id } });
+    return await this.model.findByPk(id);
   }
 
   async create(date) {
