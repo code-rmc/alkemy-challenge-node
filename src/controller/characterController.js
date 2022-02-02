@@ -1,30 +1,40 @@
-const { Request, Response } = require("express");
+const express = require("express");
 const {
-  getCharacter: getCharacterServices,
-  findCharacterMovies: findCharacterMoviesServices,
-  saveCharacter,
+  getAll,
+  getByid,
+  getByFilter,
+  create,
+  update,
+  remove,
 } = require("../services/characterService");
+const logger = require("../loader/logger");
 
 /**
  *
- * @param {Request} req
- * @param {Response} res
- * @param {} next
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
  */
-const getCharacter = async (req, res, next) => {
+const getAllCharacters = async (req, res, next) => {
   try {
-    const characters = await getCharacterServices();
+    const characters = await getAll();
     res.json(characters);
   } catch (error) {
     next(error);
   }
 };
 
-const createCharacter = async (req, res, next) => {
+/**
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
+const findCharacterMovies = async (req, res, next) => {
   try {
-    const character = req.body;
-    const characterSave = await saveCharacter(character);
-    res.json(characterSave);
+    const { id } = req.params;
+    const CharacterMovies = await getByid(id);
+    res.json(CharacterMovies);
   } catch (error) {
     next(error);
   }
@@ -32,23 +42,73 @@ const createCharacter = async (req, res, next) => {
 
 /**
  *
- * @param {Request} req
- * @param {Response} res
- * @param {} next
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
  */
-const findCharacterMovies = async (req, res, next) => {
+const findCharacterFilter = async (req, res, next) => {
+  try {
+    const { search, options } = req.query;
+    const result = await getByFilter(search, options);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+/**
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
+const saveCharacter = async (req, res, next) => {
+  try {
+    const character = req.body;
+    const newCharacter = await create(character);
+    res.json(newCharacter);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
+const updateCharacter = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log(id);
-    const movies = await findCharacterMoviesServices(id);
-    res.json(movies);
+    const character = req.body;
+    const characterUpdate = await update(id, character);
+    res.json(characterUpdate);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
+const deleteCharacter = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const characterDelete = await remove(id);
+    res.json(characterDelete);
   } catch (error) {
     next(error);
   }
 };
 
 module.exports = {
-  getCharacter,
-  createCharacter,
+  getAllCharacters,
   findCharacterMovies,
+  findCharacterFilter,
+  saveCharacter,
+  updateCharacter,
+  deleteCharacter,
 };

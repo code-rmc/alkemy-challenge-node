@@ -9,6 +9,7 @@ if (!envFound) {
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
 module.exports = {
+  level: process.env.LOGGER,
   port: process.env.PORT,
   api: {
     prefix: "/api/",

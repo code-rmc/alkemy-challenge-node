@@ -1,32 +1,32 @@
 "use strict";
-const { Model } = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
-  class Character extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      Character.belongsToMany(models.Movie, {
-        through: "Characters_Movies",
-        foreignKey: "idCharacter",
-      });
-    }
+const { DataTypes, Model } = require("sequelize");
+const sequelize = require("../loader/database/connection/database");
+
+// const Character = sequelize.define(
+//   "Character",
+//   {
+//     name: { type: DataTypes.STRING(50), allowNull: false },
+//     age: { type: DataTypes.STRING(50), defaultValue: "Unknown" },
+//     weight: { type: DataTypes.DECIMAL, allowNull: false },
+//     history: { type: DataTypes.TEXT, allowNull: false },
+//     picture: { type: DataTypes.STRING, allowNull: false },
+//   },
+//   { timestamps: true }
+// );
+
+class Character extends Model {}
+Character.init(
+  {
+    name: { type: DataTypes.STRING(50), allowNull: false },
+    age: { type: DataTypes.STRING(50), defaultValue: "Unknown" },
+    weight: { type: DataTypes.DECIMAL, allowNull: false },
+    history: { type: DataTypes.TEXT, allowNull: false },
+    picture: { type: DataTypes.STRING, allowNull: false },
+  },
+  {
+    sequelize,
+    modelName: "Character",
   }
-  Character.init(
-    {
-      name: DataTypes.STRING(50),
-      age: DataTypes.STRING(50),
-      weight: DataTypes.DECIMAL,
-      history: DataTypes.TEXT,
-      picture: DataTypes.STRING,
-    },
-    {
-      sequelize,
-      modelName: "Character",
-    }
-  );
-  return Character;
-};
+);
+
+module.exports = Character;

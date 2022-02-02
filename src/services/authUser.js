@@ -2,7 +2,7 @@ const { comparePass, encryptPass } = require("../helpers/encryptPass");
 const { generateJwt } = require("../helpers/userJwt");
 const UserRepository = require("../repositories/userRepository");
 const AppError = require("../errors/appError");
-const { User } = require("../models/user");
+const User = require("../models/user");
 
 const userRepo = new UserRepository();
 
@@ -30,7 +30,7 @@ const findByEmail = async (email) => {
  * @param {String} password
  * @returns {String, String}
  */
-const loginkUser = async (email, password) => {
+const loginUser = async (email, password) => {
   try {
     const user = await findByEmail(email);
 
@@ -62,6 +62,6 @@ const loginkUser = async (email, password) => {
 };
 
 module.exports = {
-  loginkUser,
   register,
+  loginUser,
 };

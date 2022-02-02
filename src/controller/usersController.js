@@ -1,10 +1,10 @@
 const { Request, Response } = require("express");
-const { loginkUser, register } = require("../services/authUser");
+const { loginUser, register } = require("../services/authUser");
 
 const loginController = async (req = Request, res = Response, next) => {
   try {
     const { email, password } = req.body;
-    const userToken = await loginkUser(email, password);
+    const userToken = await loginUser(email, password);
     res.json(userToken);
   } catch (error) {
     next(error);

@@ -1,40 +1,31 @@
 "use strict";
-const { Model } = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
-  class Movie extends Model {
-    static associate(models) {
-      // define association here
-      // n:1
-      Movie.hasMany(models.Type, {
-        foreignKey: {
-          name: "id",
-          target_key: "idType",
-        },
-      });
-      // n:n
-      Movie.belongsToMany(models.Character, {
-        through: "Characters_Movies",
-        foreignKey: "idMovie",
-      });
-      // n:n
-      Movie.belongsToMany(models.Gender, {
-        through: "Genders_Movies",
-        foreignKey: "idMovie",
-      });
-    }
+const { DataTypes, Model } = require("sequelize");
+const sequelize = require("../loader/database/connection/database");
+
+// const Movie = sequelize.define(
+//   "Movie",
+//   {
+//     title: { type: DataTypes.STRING(80), allowNull: false },
+//     picture: { type: DataTypes.STRING, allowNull: false },
+//     creation_date: DataTypes.DATE,
+//     score: DataTypes.DECIMAL,
+//   },
+//   { timestamps: true }
+// );
+
+class Movie extends Model {}
+Movie.init(
+  {
+    // idType: DataTypes.INTEGER,
+    title: { type: DataTypes.STRING(80), allowNull: false },
+    picture: { type: DataTypes.STRING, allowNull: false },
+    creation_date: DataTypes.DATE,
+    score: DataTypes.DECIMAL,
+  },
+  {
+    sequelize,
+    modelName: "Movie",
   }
-  Movie.init(
-    {
-      idType: DataTypes.INTEGER,
-      title: DataTypes.STRING(80),
-      picture: DataTypes.STRING,
-      creation_date: DataTypes.DATE,
-      score: DataTypes.DECIMAL,
-    },
-    {
-      sequelize,
-      modelName: "Movie",
-    }
-  );
-  return Movie;
-};
+);
+
+module.exports = Movie;

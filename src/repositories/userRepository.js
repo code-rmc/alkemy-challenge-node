@@ -1,5 +1,5 @@
 const BaseRepository = require("./baseRepository");
-const { User } = require("../models");
+const { User } = require("../loader/database/associations");
 
 class UserRepository extends BaseRepository {
   constructor() {
@@ -8,7 +8,7 @@ class UserRepository extends BaseRepository {
 
   async findEmail(email) {
     return await this.model.findOne({
-      where: { email: email },
+      where: { email },
     });
   }
 }

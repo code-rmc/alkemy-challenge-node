@@ -3,12 +3,12 @@ class BaseRepository {
     this.model = dbModels;
   }
 
-  async getAll() {
+  async findAll() {
     return await this.model.findAll();
   }
 
-  async getId(id) {
-    return await this.model.find({ where: { id } });
+  async findById(id) {
+    return await this.model.findByPk(id);
   }
 
   async create(date) {

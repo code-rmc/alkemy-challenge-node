@@ -1,11 +1,12 @@
 const express = require("express");
 const morgan = require("morgan");
 const config = require("../../config");
+const logger = require("../logger");
 
 class ServerExpress {
   constructor() {
     this.app = express();
-    this.basePathUser = `${config.api.prefix}auth`;
+    this.basePath = `${config.api.prefix}`;
     this.basePathCharacter = `${config.api.prefix}character`;
     this.basePathMovie = `${config.api.prefix}movie`;
     this.port = config.port;
@@ -24,9 +25,14 @@ class ServerExpress {
   }
 
   _routes() {
-    this.app.use(this.basePathUser, require("../../routes/users"));
-    this.app.use(this.basePathCharacter, require("../../routes/characters"));
-    this.app.use(this.basePathMovie, require("../../routes/movie"));
+    this.app.use(`${this.basePath}auth`, require("../../routes/users"));
+    this.app.use(
+      `${this.basePath}character`,
+      require("../../routes/characters")
+    );
+    this.app.use(`${this.basePath}movie`, require("../../routes/movie"));
+    this.app.use(`${this.basePath}type`, require("../../routes/type"));
+    this.app.use(`${this.basePath}genre`, require("../../routes/genre"));
   }
 
   _notFound() {
@@ -40,7 +46,7 @@ class ServerExpress {
   _handlerError() {
     this.app.use((err, req, res, next) => {
       const code = err.code || 500;
-      console.log("************----ERROR " + err.message);
+      logger.warn("************> ERROR " + err.message);
       const body = {
         error: {
           code,

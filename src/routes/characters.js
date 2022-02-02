@@ -1,18 +1,20 @@
 const { Router } = require("express");
 const {
-  getCharacter,
-  createCharacter,
+  getAllCharacters,
   findCharacterMovies,
+  findCharacterFilter,
+  saveCharacter,
+  updateCharacter,
+  deleteCharacter,
 } = require("../controller/characterController");
 
 const router = Router();
 
-router.get("/", getCharacter);
+router.get("/", getAllCharacters);
+router.get("/filter", findCharacterFilter);
+router.post("/", saveCharacter);
 router.get("/:id", findCharacterMovies);
-router.post("/", createCharacter);
-/*
-router.put("/:id", );
-router.delete("/:id", );
-*/
+router.put("/:id", updateCharacter);
+router.delete("/:id", deleteCharacter);
 
 module.exports = router;

@@ -5,7 +5,7 @@ const {
   create,
   update,
   remove,
-} = require("../services/movieService");
+} = require("../services/typeService");
 
 /**
  *
@@ -13,10 +13,10 @@ const {
  * @param {express.Response} res
  * @param {express.NextFunction} next
  */
-const getAllMovies = async (req, res, next) => {
+const getAllTypes = async (req, res, next) => {
   try {
-    const movies = await getAll();
-    res.json(movies);
+    const types = await getAll();
+    res.json(types);
   } catch (error) {
     next(error);
   }
@@ -28,11 +28,11 @@ const getAllMovies = async (req, res, next) => {
  * @param {express.Response} res
  * @param {express.NextFunction} next
  */
-const findByMovies = async (req, res, next) => {
+const findByType = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const movies = await getByid(id);
-    res.json(movies);
+    const type = await getByid(id);
+    res.json(type);
   } catch (error) {
     next(error);
   }
@@ -44,11 +44,11 @@ const findByMovies = async (req, res, next) => {
  * @param {express.Response} res
  * @param {express.NextFunction} next
  */
-const saveMovie = async (req, res, next) => {
+const saveType = async (req, res, next) => {
   try {
-    const movie = req.body;
-    const movieSave = await create(movie);
-    res.json(movieSave);
+    const type = req.body;
+    const typeSave = await create(type);
+    res.json(typeSave);
   } catch (error) {
     next(error);
   }
@@ -60,37 +60,37 @@ const saveMovie = async (req, res, next) => {
  * @param {express.Response} res
  * @param {express.NextFunction} next
  */
-const updateMovie = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const movie = req.body;
-    const movieUpdate = await update(id, movie);
-    res.json(movieUpdate);
-  } catch (error) {
-    next(error);
-  }
-};
-
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- */
-const deleteMovie = async (req, res, next) => {
+const updateType = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const movie = await remove(id);
-    res.json(movie);
+    const type = req.body;
+    const typeUpdate = await update(id, type);
+    res.json(typeUpdate);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
+const deleteType = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const type = await remove(id);
+    res.json(type);
   } catch (error) {
     next(error);
   }
 };
 
 module.exports = {
-  getAllMovies,
-  findByMovies,
-  saveMovie,
-  updateMovie,
-  deleteMovie,
+  getAllTypes,
+  findByType,
+  saveType,
+  updateType,
+  deleteType,
 };
