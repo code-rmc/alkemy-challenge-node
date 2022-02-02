@@ -9,6 +9,7 @@ class ServerExpress {
     this.basePath = `${config.api.prefix}`;
     this.basePathCharacter = `${config.api.prefix}character`;
     this.basePathMovie = `${config.api.prefix}movie`;
+    this.basePathGenre = `${config.api.prefix}genre`;
     this.port = config.port;
 
     // Agregar cors - winston - swagger

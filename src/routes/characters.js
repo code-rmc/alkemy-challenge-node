@@ -7,7 +7,10 @@ const {
   updateCharacter,
   deleteCharacter,
 } = require("../controller/characterController");
-
+const {
+  postValidationCharacter,
+  deleteValidationCharacter,
+} = require("../middleware/character/character");
 const router = Router();
 
 router.get("/", getAllCharacters);

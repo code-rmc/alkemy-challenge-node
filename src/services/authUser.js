@@ -1,5 +1,5 @@
 const { comparePass, encryptPass } = require("../helpers/encryptPass");
-const { generateJwt } = require("../helpers/userJwt");
+const { generateJwt, verifyJwt } = require("../helpers/userJwt");
 const UserRepository = require("../repositories/userRepository");
 const AppError = require("../errors/appError");
 const User = require("../models/user");
@@ -18,7 +18,7 @@ const register = async (user) => {
 /**
  *
  * @param {String} email
- * @returns {User} user
+ * @returns {User}
  */
 const findByEmail = async (email) => {
   return await userRepo.findEmail(email);
