@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const BaseRepository = require("./baseRepository");
 const {
   Movie,
@@ -5,6 +6,7 @@ const {
   Type,
   Genre,
 } = require("../loader/database/associations");
+
 class MovieRepository extends BaseRepository {
   constructor() {
     super(Movie);
@@ -14,11 +16,6 @@ class MovieRepository extends BaseRepository {
     return await this.model.findAll({
       attributes: ["id", "title", "picture", "creation_date"],
     });
-  }
-
-  async create({ genres, ...movie }) {
-    const newMovie = await this.model.create(movie);
-    return await newMovie.addGenres(genres);
   }
 
   async findById(id) {
@@ -42,6 +39,74 @@ class MovieRepository extends BaseRepository {
         },
       ],
     });
+  }
+
+  async findByFilter({ name }, options = null) {
+    return (await !!options?.genre)
+      ? this.findMoviesOptions(name, options)
+      : this.findMoviesName(name, options);
+  }
+
+  async findMoviesName(name, { sort }) {
+    return await this.model.findAll({
+      attributes: ["id", "title", "picture", "creation_date", "score"],
+      where: {
+        title: {
+          [Op.like]: name,
+        },
+      },
+      include: [
+        { model: Type, attributes: ["type"] },
+        {
+          model: Genre,
+          attributes: ["genre"],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+      order: [["creation_date", sort]],
+    });
+  }
+
+  async findMoviesOptions(name, { genre, sort }) {
+    const opcGenre = genre
+      ? {
+          "$Genres.genre$": {
+            [Op.like]: genre,
+          },
+        }
+      : null;
+
+    // Query filter
+    return await this.model.findAll({
+      where: {
+        [Op.and]: [
+          {
+            title: {
+              [Op.like]: name,
+            },
+          },
+          opcGenre,
+        ],
+      },
+      include: [
+        { model: Type, attributes: ["type"] },
+        {
+          model: Genre,
+          attributes: ["genre"],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+      order: [["creation_date", sort]],
+    });
+  }
+
+  async create({ genres, ...movie }) {
+    const newMovie = await this.model.create(movie);
+    return await newMovie.addGenres(genres);
   }
 }
 

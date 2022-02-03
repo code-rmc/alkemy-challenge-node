@@ -46,10 +46,6 @@ class CharacterRepository extends BaseRepository {
           attributes: [],
         },
       },
-      // limit: limit,
-      // offset: offset,
-      // order: [["id", sort]],
-      // await db.seq.query()
     });
   }
 

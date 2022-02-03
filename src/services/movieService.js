@@ -10,6 +10,10 @@ const getByid = async (id) => {
   return await movieRepo.findById(id);
 };
 
+const getByFilter = async (search, options) => {
+  return await movieRepo.findByFilter(search, options);
+};
+
 const create = async (movie) => {
   return await movieRepo.create(movie);
 };
@@ -25,6 +29,7 @@ const remove = async (id) => {
 module.exports = {
   getAll,
   getByid,
+  getByFilter,
   create,
   update,
   remove,

@@ -2,6 +2,7 @@ const express = require("express");
 const {
   getAll,
   getByid,
+  getByFilter,
   create,
   update,
   remove,
@@ -33,6 +34,22 @@ const findByMovies = async (req, res, next) => {
     const { id } = req.params;
     const movies = await getByid(id);
     res.json(movies);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
+const findMoviesFilter = async (req, res, next) => {
+  try {
+    const { search, options } = req.query;
+    const result = await getByFilter(search, options);
+    res.json(result);
   } catch (error) {
     next(error);
   }
@@ -90,6 +107,7 @@ const deleteMovie = async (req, res, next) => {
 module.exports = {
   getAllMovies,
   findByMovies,
+  findMoviesFilter,
   saveMovie,
   updateMovie,
   deleteMovie,
