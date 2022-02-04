@@ -41,8 +41,8 @@ class MovieRepository extends BaseRepository {
     });
   }
 
-  async findByFilter({ name }, options = null) {
-    return (await !!options?.genre)
+  async findByFilter({ name }, options) {
+    return (await !!options.genre)
       ? this.findMoviesOptions(name, options)
       : this.findMoviesName(name, options);
   }
@@ -52,7 +52,7 @@ class MovieRepository extends BaseRepository {
       attributes: ["id", "title", "picture", "creation_date", "score"],
       where: {
         title: {
-          [Op.like]: name,
+          [Op.like]: `%${name}%`,
         },
       },
       include: [
@@ -73,7 +73,7 @@ class MovieRepository extends BaseRepository {
     const opcGenre = genre
       ? {
           "$Genres.genre$": {
-            [Op.like]: genre,
+            [Op.like]: `%${genre}%`,
           },
         }
       : null;
@@ -84,7 +84,7 @@ class MovieRepository extends BaseRepository {
         [Op.and]: [
           {
             title: {
-              [Op.like]: name,
+              [Op.like]: `%${name}%`,
             },
           },
           opcGenre,
@@ -107,6 +107,16 @@ class MovieRepository extends BaseRepository {
   async create({ genres, ...movie }) {
     const newMovie = await this.model.create(movie);
     return await newMovie.addGenres(genres);
+  }
+
+  async update(id, data) {
+    if (data.genres) {
+      const movie = await this.model.findByPk(id);
+      return await movie.setGenres(data.genres);
+    }
+    return await this.model.update(data, {
+      where: { id },
+    });
   }
 }
 

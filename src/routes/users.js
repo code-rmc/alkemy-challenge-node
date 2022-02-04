@@ -3,7 +3,7 @@ const {
   loginController,
   registerController,
 } = require("../controller/usersController");
-const { createUser, loginUser } = require("../middleware/user/user");
+const { createUser, loginUser } = require("../middleware/user");
 
 const router = Router();
 

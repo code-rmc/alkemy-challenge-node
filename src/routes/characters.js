@@ -9,15 +9,19 @@ const {
 } = require("../controller/characterController");
 const {
   postValidationCharacter,
+  getByIdValidationCharacter,
+  getByFilterValidationCharacter,
+  putValidationCharacter,
   deleteValidationCharacter,
-} = require("../middleware/character/character");
+} = require("../middleware/character");
+
 const router = Router();
 
 router.get("/", getAllCharacters);
-router.get("/filter", findCharacterFilter);
-router.post("/", saveCharacter);
-router.get("/:id", findCharacterMovies);
-router.put("/:id", updateCharacter);
-router.delete("/:id", deleteCharacter);
+router.get("/filter", getByFilterValidationCharacter, findCharacterFilter);
+router.post("/", postValidationCharacter, saveCharacter);
+router.get("/:id", getByIdValidationCharacter, findCharacterMovies);
+router.put("/:id", putValidationCharacter, updateCharacter);
+router.delete("/:id", deleteValidationCharacter, deleteCharacter);
 
 module.exports = router;

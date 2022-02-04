@@ -25,7 +25,7 @@ class CharacterRepository extends BaseRepository {
     });
   }
 
-  async findByFilter({ name }, options = null) {
+  async findByFilter({ name }, options) {
     return (await options) === null
       ? this.findCharactersName(name)
       : this.findCharactersOptions(name, options);
@@ -36,7 +36,7 @@ class CharacterRepository extends BaseRepository {
       attributes: ["id", "name", "age", "weight"],
       where: {
         name: {
-          [Op.like]: name,
+          [Op.like]: `%${name}%`,
         },
       },
       include: {
@@ -53,21 +53,21 @@ class CharacterRepository extends BaseRepository {
     const opcAge = age
       ? {
           age: {
-            [Op.like]: age,
+            [Op.like]: `%${age}%`,
           },
         }
       : null;
     const opcWeight = weight
       ? {
           weight: {
-            [Op.like]: weight,
+            [Op.like]: `%${weight}%`,
           },
         }
       : null;
     const opcMovie = movie
       ? {
           "$Movies.title$": {
-            [Op.like]: movie,
+            [Op.like]: `%${movie}%`,
           },
         }
       : null;
@@ -79,7 +79,7 @@ class CharacterRepository extends BaseRepository {
         [Op.and]: [
           {
             name: {
-              [Op.like]: name,
+              [Op.like]: `%${name}%`,
             },
           },
           opcAge,
@@ -109,6 +109,16 @@ class CharacterRepository extends BaseRepository {
     //           idCharacter: newCharacter.dataValues.id,
     //         };
     //       });
+  }
+
+  async update(id, data) {
+    if (data.movies) {
+      const character = await this.model.findByPk(id);
+      return await character.setMovies(data.movies);
+    }
+    return await this.model.update(data, {
+      where: { id },
+    });
   }
 }
 

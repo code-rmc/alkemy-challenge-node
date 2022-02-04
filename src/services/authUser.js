@@ -1,5 +1,5 @@
 const { comparePass, encryptPass } = require("../helpers/encryptPass");
-const { generateJwt, verifyJwt } = require("../helpers/userJwt");
+const { generateJwt } = require("../helpers/userJwt");
 const UserRepository = require("../repositories/userRepository");
 const AppError = require("../errors/appError");
 const User = require("../models/user");
@@ -8,11 +8,11 @@ const userRepo = new UserRepository();
 
 /**
  *
- * @param {User} user
+ * @param {number} id
+ * @returns {User}
  */
-const register = async (user) => {
-  user.password = await encryptPass(user.password);
-  return userRepo.create(user);
+const userFindById = async (id) => {
+  return await userRepo.findById(id);
 };
 
 /**
@@ -22,6 +22,15 @@ const register = async (user) => {
  */
 const findByEmail = async (email) => {
   return await userRepo.findEmail(email);
+};
+
+/**
+ *
+ * @param {User} user
+ */
+const register = async (user) => {
+  user.password = await encryptPass(user.password);
+  return userRepo.create(user);
 };
 
 /**
@@ -50,7 +59,7 @@ const loginUser = async (email, password) => {
       );
     }
 
-    const token = generateJwt(user.id);
+    const token = await generateJwt(user.id);
 
     return {
       token,
@@ -64,4 +73,6 @@ const loginUser = async (email, password) => {
 module.exports = {
   register,
   loginUser,
+  findByEmail,
+  userFindById,
 };

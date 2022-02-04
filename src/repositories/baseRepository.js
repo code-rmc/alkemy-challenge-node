@@ -11,12 +11,12 @@ class BaseRepository {
     return await this.model.findByPk(id);
   }
 
-  async create(date) {
-    return await this.model.create(date);
+  async create(data) {
+    return await this.model.create(data);
   }
 
-  async update(id, date) {
-    return await this.model.update(date, {
+  async update(id, data) {
+    return await this.model.update(data, {
       where: { id },
     });
   }

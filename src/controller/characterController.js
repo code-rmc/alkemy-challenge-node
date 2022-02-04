@@ -48,7 +48,7 @@ const findCharacterMovies = async (req, res, next) => {
  */
 const findCharacterFilter = async (req, res, next) => {
   try {
-    const { search, options } = req.query;
+    const { search, options = null } = req.query;
     const result = await getByFilter(search, options);
     res.json(result);
   } catch (error) {

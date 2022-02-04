@@ -6,6 +6,10 @@ class UserRepository extends BaseRepository {
     super(User);
   }
 
+  async create(data) {
+    return await this.model.create(data);
+  }
+
   async findEmail(email) {
     return await this.model.findOne({
       where: { email },

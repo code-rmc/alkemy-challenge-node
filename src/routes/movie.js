@@ -7,14 +7,21 @@ const {
   updateMovie,
   deleteMovie,
 } = require("../controller/movieControllers");
+const {
+  postValidationMovie,
+  getByIdValidationMovie,
+  getByFilterValidationMovie,
+  putValidationMovie,
+  deleteValidationMovie,
+} = require("../middleware/movie");
 
 const router = Router();
 
 router.get("/", getAllMovies);
-router.get("/filter", findMoviesFilter);
-router.get("/:id", findByMovies);
-router.post("/", saveMovie);
-router.put("/:id", updateMovie);
-router.delete("/:id", deleteMovie);
+router.get("/filter", getByFilterValidationMovie, findMoviesFilter);
+router.get("/:id", getByIdValidationMovie, findByMovies);
+router.post("/", postValidationMovie, saveMovie);
+router.put("/:id", putValidationMovie, updateMovie);
+router.delete("/:id", deleteValidationMovie, deleteMovie);
 
 module.exports = router;

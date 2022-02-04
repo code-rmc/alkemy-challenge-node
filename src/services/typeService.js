@@ -10,12 +10,12 @@ const getByid = async (id) => {
   return await typeRepo.findById(id);
 };
 
-const create = async (character) => {
-  return await typeRepo.create(character);
+const create = async (type) => {
+  return await typeRepo.create(type);
 };
 
-const update = async (id, character) => {
-  return await typeRepo.update(id, character);
+const update = async (id, type) => {
+  return await typeRepo.update(id, type);
 };
 
 const remove = async (id) => {
