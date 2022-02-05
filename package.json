@@ -4,6 +4,7 @@
   "description": "Alkemi challenge develop a disney API",
   "main": "src/index.js",
   "scripts": {
+    "start": "node src",
     "dev": "npx nodemon src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
