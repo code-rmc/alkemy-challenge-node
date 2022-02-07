@@ -48,7 +48,7 @@ const saveGenre = async (req, res, next) => {
   try {
     const Genre = req.body;
     const newGenre = await create(Genre);
-    res.json(newGenre);
+    res.status(201).json(newGenre);
   } catch (error) {
     next(error);
   }

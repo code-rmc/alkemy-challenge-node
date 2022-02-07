@@ -1,6 +1,9 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
 const config = require("../../config");
+const swaggerDocument = require("../swagger/swagger.json");
 const logger = require("../logger");
 
 class ServerExpress {
@@ -13,25 +16,35 @@ class ServerExpress {
     this.basePathGenre = `${config.api.prefix}genre`;
     this.port = config.port;
 
-    // Agregar cors - winston - swagger
     this._middleware();
+    this._swaggerConfig();
     this._routes();
     this._notFound();
     this._handlerError();
   }
 
   _middleware() {
+    this.app.use(cors());
     this.app.use(morgan("tiny"));
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
   }
 
   _routes() {
+    this.app.head("/status", (req, res) => res.status(200).end());
     this.app.use(this.basePathAuth, require("../../routes/users"));
     this.app.use(this.basePathCharacter, require("../../routes/characters"));
     this.app.use(this.basePathMovie, require("../../routes/movie"));
     this.app.use(this.basePathType, require("../../routes/type"));
     this.app.use(this.basePathGenre, require("../../routes/genre"));
+  }
+
+  _swaggerConfig() {
+    this.app.use(
+      config.swagger.path,
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerDocument)
+    );
   }
 
   _notFound() {

@@ -48,7 +48,12 @@ const validRole = (userRole, roles) => {
 module.exports = {
   verifyToken: async (req, res, next) => {
     try {
-      const jwt = req.header("Authorization");
+      let jwt = req.header("Authorization");
+      if (!jwt)
+        throw new AppError("Authentication failed! Token required", 401);
+      jwt = jwt.search("Bearer")
+        ? req.header("Authorization")
+        : req.header("Authorization").split("Bearer ")[1];
       const user = await validToken(jwt);
       req.user = user.dataValues;
       next();

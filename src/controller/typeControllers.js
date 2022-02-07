@@ -48,7 +48,7 @@ const saveType = async (req, res, next) => {
   try {
     const type = req.body;
     const typeSave = await create(type);
-    res.json(typeSave);
+    res.status(201).json(typeSave);
   } catch (error) {
     next(error);
   }
@@ -81,7 +81,7 @@ const deleteType = async (req, res, next) => {
   try {
     const { id } = req.params;
     const type = await remove(id);
-    res.json(type);
+    res.status(204).json(type);
   } catch (error) {
     next(error);
   }

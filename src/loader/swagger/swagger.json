@@ -1,0 +1,488 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API REST User Repo",
+    "description": "This is an user API project",
+    "contact": {
+      "email": "you@your-company.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/",
+      "description": "Development"
+    },
+    {
+      "url": "https://challenge-alkemy-rmc.herokuapp.com/api/",
+      "description": "Production"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Operations Login user"
+    },
+    {
+      "name": "Movies",
+      "description": "Operations about Movies"
+    }
+  ],
+  "security": {
+    "accessCode": ["read", "write"]
+  },
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login user",
+        "description": "User authenticated in the system",
+        "operationId": "loginUser",
+        "requestBody": {
+          "description": "User authenticated in the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthLogin"
+              }
+            }
+          }
+        },
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "user authenticated"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed Email / Password does not correct."
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      }
+    },
+    "/movie": {
+      "get": {
+        "tags": ["Movies"],
+        "summary": "Get a list of all movies",
+        "description": "The array of all movies in JSON format.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "The array of all movies in JSON format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/allMovie"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Movies"],
+        "summary": "add a movie",
+        "description": "Adds an movie to the system",
+        "operationId": "addMovie",
+        "requestBody": {
+          "description": "Add an movie to the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Movie"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "user created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      }
+    },
+    "/movie/{id}": {
+      "get": {
+        "tags": ["Movies"],
+        "summary": "Get a movie",
+        "description": "The movie in JSON format.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the movie that need to be update.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The movie in JSON format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MovieFull"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Movies"],
+        "summary": "update an existing movie by providing the id",
+        "description": "update an item to the system",
+        "operationId": "updatemovie",
+        "requestBody": {
+          "description": "update an movie to the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieBodyUpdate"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the movie that need to be update.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user update"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Movies"],
+        "summary": "delete an movie",
+        "description": "delete an item to the system",
+        "operationId": "deleteMovie",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the movie that need to be deleted.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "movie deleted"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authentication failed! User without privileges"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Users": {
+        "required": ["id"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": "2"
+          },
+          "name": {
+            "type": "string",
+            "example": "Javier"
+          },
+          "last": {
+            "type": "string",
+            "example": "Perez"
+          },
+          "email": {
+            "type": "string",
+            "example": "0.6333065036502268@email.com.ar"
+          },
+          "birthdate": {
+            "type": "date",
+            "example": "2001-06-16T03:00:00.000Z"
+          },
+          "password": {
+            "type": "string",
+            "example": "$2asddflO1o8iLy3ZTXDlFEawVWMOhzIS3za1GYtmQF5NyuB7.kos77/fdQ6"
+          },
+          "rol": {
+            "type": "string",
+            "example": "USER_ROLE"
+          },
+          "enable": {
+            "type": "boolean",
+            "example": true
+          },
+          "createdAt": {
+            "type": "date",
+            "example": "2022-01-13T22:03:53.859Z"
+          },
+          "updatedAt": {
+            "type": "date",
+            "example": "2022-01-13T22:03:53.859Z"
+          }
+        }
+      },
+      "Movie": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Mulan"
+          },
+          "picture": {
+            "type": "string",
+            "example": "https://static.wikia.nocookie.net/disney/images/c/cb/Mulan_ver1_xlg.jpg/revision/latest?cb=20160923003413&path-prefix=es"
+          },
+          "creation_date": {
+            "type": "date",
+            "example": "1998-06-19"
+          },
+          "score": {
+            "type": "decimal",
+            "example": "4.1"
+          },
+          "idType": {
+            "type": "integer",
+            "example": "1"
+          }
+        }
+      },
+      "MovieFull": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example":"1"
+          },
+          "title": {
+            "type": "string",
+            "example": "Mulan"
+          },
+          "picture": {
+            "type": "string",
+            "example": "https://static.wikia.nocookie.net/disney/images/c/cb/Mulan_ver1_xlg.jpg/revision/latest?cb=20160923003413&path-prefix=es"
+          },
+          "creation_date": {
+            "type": "date",
+            "example": "1998-06-19"
+          },
+          "score": {
+            "type": "decimal",
+            "example": "4.1"
+          },
+          "Type": {
+            "type": "array",
+            "example": [{"type": "Movies"}]
+          },
+          "Genres": {
+            "type": "array",
+            "example": [{"genre": "Animation"}]
+          },
+          "Characters": {
+            "type": "array",
+            "example": [
+              {
+                "id": 1,
+                "name": "Fa Mulan",
+                "age": "16",
+                "weight": "30",
+                "picture": "https://static.wikia.nocookie.net/disney/images/8/83/FaMul%C3%A1n.png/revision/latest?cb=20130830100817&path-prefix=es"
+              }
+            ]
+          }
+        }
+      },
+      "allMovie": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": "1"
+          },
+          "title": {
+            "type": "string",
+            "example": "Mulan"
+          },
+          "picture": {
+            "type": "string",
+            "example": "https://static.wikia.nocookie.net/disney/images/c/cb/Mulan_ver1_xlg.jpg/revision/latest?cb=20160923003413&path-prefix=es"
+          },
+          "creation_date": {
+            "type": "date",
+            "example": "1998-06-19T03:00:00.000Z"
+          }
+        }
+      },
+      "MovieBodyUpdate": {
+        "required": ["id"],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Mulan"
+          },
+          "picture": {
+            "type": "string",
+             "example": "https://static.wikia.nocookie.net/disney/images/c/cb/Mulan_ver1_xlg.jpg/revision/latest?cb=20160923003413&path-prefix=es"
+          },
+          "creation_date": {
+            "type": "date",
+            "example": "1998-06-19"
+          }
+        }
+      },
+      "UserBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Javier"
+          },
+          "last": {
+            "type": "string",
+            "example": "Perez"
+          },
+          "email": {
+            "type": "string",
+            "example": "random@email.com.ar"
+          },
+          "birthdate": {
+            "type": "date",
+            "example": "06-16-2001"
+          },
+          "password": {
+            "type": "string",
+            "example": "123456"
+          },
+          "rol": {
+            "type": "string",
+            "example": "USER_ROLE"
+          }
+        }
+      },
+      "UserBodyUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Javier"
+          },
+          "last": {
+            "type": "string",
+            "example": "Perez"
+          },
+          "birthdate": {
+            "type": "date",
+            "example": "06-16-2001"
+          },
+          "password": {
+            "type": "string",
+            "example": "123456"
+          },
+          "rol": {
+            "type": "string",
+            "example": "USER_ROLE"
+          }
+        }
+      },
+      "AuthLogin": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "test@email.com.ar"
+          },
+          "password": {
+            "type": "string",
+            "example": "123456"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  }
+}

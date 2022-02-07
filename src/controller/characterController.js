@@ -65,7 +65,7 @@ const saveCharacter = async (req, res, next) => {
   try {
     const character = req.body;
     const newCharacter = await create(character);
-    res.json(newCharacter);
+    res.status(201).json(newCharacter);
   } catch (error) {
     next(error);
   }
@@ -98,7 +98,7 @@ const deleteCharacter = async (req, res, next) => {
   try {
     const { id } = req.params;
     const characterDelete = await remove(id);
-    res.json(characterDelete);
+    res.status(204).json(characterDelete);
   } catch (error) {
     next(error);
   }

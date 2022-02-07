@@ -15,7 +15,7 @@ const registerController = async (req = Request, res = Response, next) => {
   try {
     const user = req.body;
     const usertest = await register(user);
-    res.json({ usertest });
+    res.status(201).json({ usertest });
   } catch (error) {
     next(error);
   }

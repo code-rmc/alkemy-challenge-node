@@ -18,9 +18,9 @@ const {
 const router = Router();
 
 router.get("/", getAllMovies);
+router.post("/", postValidationMovie, saveMovie);
 router.get("/filter", getByFilterValidationMovie, findMoviesFilter);
 router.get("/:id", getByIdValidationMovie, findByMovies);
-router.post("/", postValidationMovie, saveMovie);
 router.put("/:id", putValidationMovie, updateMovie);
 router.delete("/:id", deleteValidationMovie, deleteMovie);
 

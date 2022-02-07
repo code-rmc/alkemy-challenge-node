@@ -65,7 +65,7 @@ const saveMovie = async (req, res, next) => {
   try {
     const movie = req.body;
     const movieSave = await create(movie);
-    res.json(movieSave);
+    res.status(201).json(movieSave);
   } catch (error) {
     next(error);
   }
@@ -98,7 +98,7 @@ const deleteMovie = async (req, res, next) => {
   try {
     const { id } = req.params;
     const movie = await remove(id);
-    res.json(movie);
+    res.status(204).json(movie);
   } catch (error) {
     next(error);
   }
