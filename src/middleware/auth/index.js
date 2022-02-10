@@ -9,6 +9,9 @@ const validToken = async (token) => {
       throw new AppError("Authentication failed! Token required", 401);
     }
 
+    token =
+      token.toLowerCase().search("bearer") >= 0 ? token.substring(7) : token;
+
     // Validar que el token sea integro
     let id;
     try {
@@ -48,12 +51,7 @@ const validRole = (userRole, roles) => {
 module.exports = {
   verifyToken: async (req, res, next) => {
     try {
-      let jwt = req.header("Authorization");
-      if (!jwt)
-        throw new AppError("Authentication failed! Token required", 401);
-      jwt = jwt.search("Bearer")
-        ? req.header("Authorization")
-        : req.header("Authorization").split("Bearer ")[1];
+      const jwt = req.header("Authorization");
       const user = await validToken(jwt);
       req.user = user.dataValues;
       next();
