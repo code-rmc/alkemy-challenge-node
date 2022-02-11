@@ -24,7 +24,7 @@ class ServerExpress {
   }
 
   _middleware() {
-    this.app.use(cors());
+    this.app.use(cors({ origin: "*" }));
     this.app.use(morgan("tiny"));
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
