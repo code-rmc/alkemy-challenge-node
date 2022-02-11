@@ -18,8 +18,8 @@ const {
 const router = Router();
 
 router.get("/", getAllCharacters);
-router.get("/filter", getByFilterValidationCharacter, findCharacterFilter);
 router.post("/", postValidationCharacter, saveCharacter);
+router.get("/filter", getByFilterValidationCharacter, findCharacterFilter);
 router.get("/:id", getByIdValidationCharacter, findCharacterMovies);
 router.put("/:id", putValidationCharacter, updateCharacter);
 router.delete("/:id", deleteValidationCharacter, deleteCharacter);

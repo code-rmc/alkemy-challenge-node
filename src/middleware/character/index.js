@@ -1,14 +1,13 @@
 const { check } = require("express-validator");
 const { validation } = require("../common");
 const AppError = require("../../errors/appError");
-const { ROLES, ADMIN } = require("../../constant/userRoles");
+const { ADMIN } = require("../../constant/userRoles");
 const { verifyToken, verifyrole } = require("../auth");
 const { getByid } = require("../../services/characterService");
 
 const nameRequired = check("name", "Name required").notEmpty();
 const pictureRequired = check("picture", "Picture required").notEmpty();
 const weightTypeValid = check("weight", "weight is invalid").isNumeric();
-const rolValid = check("role", "Role is invalid").isIn(ROLES);
 // Search
 const nameRequiredQuery = check("search.name", "Name required").notEmpty();
 // Update & Delete
@@ -28,7 +27,6 @@ const idExist = check("id")
 const postValidationCharacter = [
   verifyToken,
   verifyrole(ADMIN),
-  rolValid,
   nameRequired,
   pictureRequired,
   weightTypeValid,
