@@ -23,7 +23,7 @@ Registro,autenticacion y autorización de usuarios y uso de Json Web Token
 
 ### EndPoints 🔩
   API Documents Swagger
-  - /api/*docs*
+  - /*docs*
 
 **character - movie - genre - type**
    * GET /api/*character*
