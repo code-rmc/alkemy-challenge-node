@@ -22,6 +22,9 @@ Registro,autenticacion y autorización de usuarios y uso de Json Web Token
 [Sequelize](https://www.npmjs.com/package/sequelize) - ORM.
 
 ### EndPoints 🔩
+  API Documents Swagger
+  - /api/*docs*
+
 **character - movie - genre - type**
    * GET /api/*character*
    * GET /api/*character*/:id 
@@ -41,9 +44,9 @@ Registro,autenticacion y autorización de usuarios y uso de Json Web Token
   ```js
   npm i
   ```
-2. Cree el archivo .env y complete con las siguientes variables de muestra que se encuentran en el archivo [.env.example](https://github.com/code-rmc/alkemy-challenge-node/blob/main/.env.example)
+2. Cree el archivo .env y complete con las variables necesarias, ejemplo se encuentran en el archivo [.env.example](https://github.com/code-rmc/alkemy-challenge-node/blob/main/.env.example)
 3. iniciar la app con
-  ```
+  ```js
   node src/index.js
   ```
   
