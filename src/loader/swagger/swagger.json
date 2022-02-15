@@ -69,6 +69,36 @@
         }
       }
     },
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register user",
+        "description": "User authenticated in the system",
+        "operationId": "registerUser",
+        "requestBody": {
+          "description": "User authenticated in the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthLogin"
+              }
+            }
+          }
+        },
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "user created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      }
+    },
     "/movie": {
       "get": {
         "tags": ["Movies"],
@@ -123,6 +153,9 @@
           },
           "401": {
             "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authorization failed! User without privileges"
           },
           "500": {
             "description": "Error server"
@@ -205,6 +238,9 @@
           },
           "401": {
             "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authorization failed! User without privileges"
           },
           "500": {
             "description": "Error server"
@@ -306,6 +342,9 @@
           "401": {
             "description": "Authentication failed! Token required"
           },
+          "403": {
+            "description": "Authorization failed! User without privileges"
+          },
           "500": {
             "description": "Error server"
           }
@@ -387,6 +426,9 @@
           },
           "401": {
             "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authorization failed! User without privileges"
           },
           "500": {
             "description": "Error server"
@@ -480,13 +522,16 @@
         ],
         "responses": {
           "201": {
-            "description": "Movie created"
+            "description": "Type created"
           },
           "400": {
             "description": "invalid input, object invalid"
           },
           "401": {
             "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authorization failed! User without privileges"
           },
           "500": {
             "description": "Error server"
@@ -570,6 +615,9 @@
           "401": {
             "description": "Authentication failed! Token required"
           },
+          "403": {
+            "description": "Authorization failed! User without privileges"
+          },
           "500": {
             "description": "Error server"
           }
@@ -599,6 +647,194 @@
         "responses": {
           "200": {
             "description": "type deleted"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authentication failed! User without privileges"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      }
+    },
+    "/genre": {
+      "get": {
+        "tags": ["Genre"],
+        "summary": "Get a list of all genre",
+        "description": "The array of all genre in JSON format.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "The array of all genre in JSON format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/allGenre"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Genre"],
+        "summary": "add a genre",
+        "description": "Adds an genre to the system",
+        "operationId": "addGenre",
+        "requestBody": {
+          "description": "Add an genre to the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Genre"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Genre created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authorization failed! User without privileges"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      }
+    },
+    "/genre/{id}": {
+      "get": {
+        "tags": ["Genre"],
+        "summary": "Get a genre",
+        "description": "The genre in JSON format.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the genre that need to be update.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The genre in JSON format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/GenreById"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Genre"],
+        "summary": "update an existing genre by providing the id",
+        "description": "update an item to the system",
+        "operationId": "updateGenre",
+        "requestBody": {
+          "description": "update an genre to the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenreBodyUpdate"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the genre that need to be update.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Genre update"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authorization failed! User without privileges"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Genre"],
+        "summary": "delete an genre",
+        "description": "delete an item to the system",
+        "operationId": "deleteGenre",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the genre that need to be deleted.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "genre deleted"
           },
           "400": {
             "description": "invalid input, object invalid"
@@ -898,6 +1134,59 @@
           "type": {
             "type": "string",
             "example": "Serie"
+          }
+        }
+      },
+      "allGenre": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": "1"
+          },
+          "genre": {
+            "type": "string",
+            "example": "Animation"
+          }
+        }
+      },
+      "Genre": {
+        "type": "object",
+        "properties": {
+          "genre": {
+            "type": "string",
+            "example": "Comedy"
+          }
+        }
+      },
+      "GenreById": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example":"1"
+          },
+          "genre": {
+            "type": "string",
+            "example": "Serie"
+          },
+          "createdAt": {
+            "type": "date",
+            "example": "2022-02-11T22:15:38.000Z"
+          },
+          "updatedAt": {
+            "type": "date",
+            "example": "2022-02-11T22:15:38.000Z"
+          }
+        }
+      },
+      "GenreBodyUpdate": {
+        "required": ["id"],
+        "type": "object",
+        "properties": {
+          "genre": {
+            "type": "string",
+            "example": "Fantasy"
           }
         }
       },
