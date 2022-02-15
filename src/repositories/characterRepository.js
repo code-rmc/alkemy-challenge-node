@@ -100,25 +100,14 @@ class CharacterRepository extends BaseRepository {
   async create({ movies, ...character }) {
     const newCharacter = await this.model.create(character);
     return await newCharacter.addMovies(movies);
-    // let movieRelation =
-    //   Object.keys(character.movies).length === 1
-    //     ? character.movies[0].idMovie
-    //     : Object.entries(character.movies).map((mov) => {
-    //         return {
-    //           idMovie: mov[1].idMovie,
-    //           idCharacter: newCharacter.dataValues.id,
-    //         };
-    //       });
   }
 
   async update(id, data) {
+    const character = await this.model.findByPk(id);
     if (data.movies) {
-      const character = await this.model.findByPk(id);
-      return await character.setMovies(data.movies);
+      await character.setMovies(data.movies);
     }
-    return await this.model.update(data, {
-      where: { id },
-    });
+    return await character.update(data);
   }
 }
 

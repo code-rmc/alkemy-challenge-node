@@ -1,6 +1,6 @@
 const typesSeed = [
   {
-    type: "Movies",
+    type: "Movie",
     createdAt: new Date(),
     updatedAt: new Date(),
   },
