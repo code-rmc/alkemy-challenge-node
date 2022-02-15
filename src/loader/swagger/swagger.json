@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "API REST User Repo",
-    "description": "This is an user API project",
+    "title": "API REST Movie",
+    "description": "This is an movie API project",
     "contact": {
       "email": "you@your-company.com"
     },
@@ -69,6 +69,36 @@
         }
       }
     },
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register user",
+        "description": "User authenticated in the system",
+        "operationId": "registerUser",
+        "requestBody": {
+          "description": "User authenticated in the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthLogin"
+              }
+            }
+          }
+        },
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "user created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      }
+    },
     "/movie": {
       "get": {
         "tags": ["Movies"],
@@ -116,13 +146,16 @@
         ],
         "responses": {
           "201": {
-            "description": "user created"
+            "description": "Movie created"
           },
           "400": {
             "description": "invalid input, object invalid"
           },
           "401": {
             "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authorization failed! User without privileges"
           },
           "500": {
             "description": "Error server"
@@ -198,13 +231,16 @@
         ],
         "responses": {
           "200": {
-            "description": "user update"
+            "description": "Movie update"
           },
           "400": {
             "description": "invalid input, object invalid"
           },
           "401": {
             "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authorization failed! User without privileges"
           },
           "500": {
             "description": "Error server"
@@ -250,56 +286,574 @@
           }
         }
       }
+    },
+    "/character": {
+      "get": {
+        "tags": ["Character"],
+        "summary": "Get a list of all character",
+        "description": "The array of all character in JSON format.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "The array of all character in JSON format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/allCharacter"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Character"],
+        "summary": "add a character",
+        "description": "Adds an character to the system",
+        "operationId": "addCharacter",
+        "requestBody": {
+          "description": "Add an character to the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Character"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "character created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authorization failed! User without privileges"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      }
+    },
+    "/character/{id}": {
+      "get": {
+        "tags": ["Character"],
+        "summary": "Get a character",
+        "description": "The character in JSON format.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the character that need to be update.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The character in JSON format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CharacterById"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Character"],
+        "summary": "update an existing character by providing the id",
+        "description": "update an item to the system",
+        "operationId": "updateCharacter",
+        "requestBody": {
+          "description": "update an character to the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CharacterBodyUpdate"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the character that need to be update.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Character update"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authorization failed! User without privileges"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Character"],
+        "summary": "delete an character",
+        "description": "delete an item to the system",
+        "operationId": "deleteCharacter",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the character that need to be deleted.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "character deleted"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authentication failed! User without privileges"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      }
+    },
+    "/type": {
+      "get": {
+        "tags": ["Type"],
+        "summary": "Get a list of all types",
+        "description": "The array of all types in JSON format.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "The array of all types in JSON format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/allTypes"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Type"],
+        "summary": "add a types",
+        "description": "Adds an types to the system",
+        "operationId": "addTypes",
+        "requestBody": {
+          "description": "Add an types to the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Type"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Type created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authorization failed! User without privileges"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      }
+    },
+    "/type/{id}": {
+      "get": {
+        "tags": ["Type"],
+        "summary": "Get a type",
+        "description": "The type in JSON format.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the type that need to be update.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The type in JSON format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TypeById"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Type"],
+        "summary": "update an existing type by providing the id",
+        "description": "update an item to the system",
+        "operationId": "updateType",
+        "requestBody": {
+          "description": "update an type to the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TypeBodyUpdate"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the type that need to be update.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Type update"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authorization failed! User without privileges"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Type"],
+        "summary": "delete an type",
+        "description": "delete an item to the system",
+        "operationId": "deleteType",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the type that need to be deleted.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "type deleted"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authentication failed! User without privileges"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      }
+    },
+    "/genre": {
+      "get": {
+        "tags": ["Genre"],
+        "summary": "Get a list of all genre",
+        "description": "The array of all genre in JSON format.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "The array of all genre in JSON format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/allGenre"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Genre"],
+        "summary": "add a genre",
+        "description": "Adds an genre to the system",
+        "operationId": "addGenre",
+        "requestBody": {
+          "description": "Add an genre to the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Genre"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Genre created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authorization failed! User without privileges"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      }
+    },
+    "/genre/{id}": {
+      "get": {
+        "tags": ["Genre"],
+        "summary": "Get a genre",
+        "description": "The genre in JSON format.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the genre that need to be update.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The genre in JSON format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/GenreById"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Genre"],
+        "summary": "update an existing genre by providing the id",
+        "description": "update an item to the system",
+        "operationId": "updateGenre",
+        "requestBody": {
+          "description": "update an genre to the system",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenreBodyUpdate"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the genre that need to be update.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Genre update"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authorization failed! User without privileges"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Genre"],
+        "summary": "delete an genre",
+        "description": "delete an item to the system",
+        "operationId": "deleteGenre",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the genre that need to be deleted.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "genre deleted"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "401": {
+            "description": "Authentication failed! Token required"
+          },
+          "403": {
+            "description": "Authentication failed! User without privileges"
+          },
+          "500": {
+            "description": "Error server"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "Users": {
-        "required": ["id"],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "example": "2"
-          },
-          "name": {
-            "type": "string",
-            "example": "Javier"
-          },
-          "last": {
-            "type": "string",
-            "example": "Perez"
-          },
-          "email": {
-            "type": "string",
-            "example": "0.6333065036502268@email.com.ar"
-          },
-          "birthdate": {
-            "type": "date",
-            "example": "2001-06-16T03:00:00.000Z"
-          },
-          "password": {
-            "type": "string",
-            "example": "$2asddflO1o8iLy3ZTXDlFEawVWMOhzIS3za1GYtmQF5NyuB7.kos77/fdQ6"
-          },
-          "rol": {
-            "type": "string",
-            "example": "USER_ROLE"
-          },
-          "enable": {
-            "type": "boolean",
-            "example": true
-          },
-          "createdAt": {
-            "type": "date",
-            "example": "2022-01-13T22:03:53.859Z"
-          },
-          "updatedAt": {
-            "type": "date",
-            "example": "2022-01-13T22:03:53.859Z"
-          }
-        }
-      },
       "Movie": {
         "type": "object",
         "properties": {
@@ -406,6 +960,279 @@
           "creation_date": {
             "type": "date",
             "example": "1998-06-19"
+          }
+        }
+      },
+      "Character": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Fa Mulán"
+          },
+          "age": {
+            "type": "string",
+            "example": "18"
+          },
+          "history": {
+            "type": "text",
+            "example": "Es una joven muchacha china que se alista en el ejército en lugar de su padre disfrazada de chico para la lucha contra los Hunos, ya que se preocupa de su padre."
+          },
+          "picture": {
+            "type": "string",
+            "example": "https://w7.pngwing.com/pngs/63/822/png-transparent-mulan-mulan-miscellaneous-hand-cartoon.png"
+          },
+          "weight": {
+            "type": "decimal",
+            "example": "45"
+          },
+          "movies": {
+            "type": "array",
+            "example": "[5]"
+          }
+        }
+      },
+      "allCharacter": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": "1"
+          },
+          "name": {
+            "type": "string",
+            "example": "Simba"
+          },
+          "picture": {
+            "type": "string",
+            "example": "https://static.wikia.nocookie.net/videojuego/images/8/8e/Simba_adulto.jpg"
+          }
+        }
+      },
+      "CharacterById": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example":"1"
+          },
+          "name": {
+            "type": "string",
+            "example": "Simba"
+          },
+          "age": {
+            "type": "string",
+            "example": "Adulto"
+          },
+          "weight": {
+            "type": "date",
+            "example": "84"
+          },
+          "history": {
+            "type": "text",
+            "example": "Hijo de Mufasa y Sarabi, Simba fue el siguiente a su padre en la línea para gobernar las Tierras del Reino. Sin embargo, después de que su malvado tío Scar asesinó a Mufasa y culpó a Simba por la muerte del antiguo rey, el joven cachorro de león es condenado al exilio mientras que Scar gobierna como rey. Fue entonces cuando Simba regresó a las Tierras del Reino y reclamó su trono y lugar legítimo en el gran ciclo de la vida"
+          },
+          "picture": {
+            "type": "string",
+            "example": "https://static.wikia.nocookie.net/videojuego/images/8/8e/Simba_adulto.jpg"
+          },
+          "createdAt": {
+            "type": "date",
+            "example": "2022-02-11T22:15:38.000Z"
+          },
+          "updatedAt": {
+            "type": "date",
+            "example": "2022-02-11T22:15:38.000Z"
+          },
+          "Movies": {
+            "type": "array",
+            "example": [
+              {
+                  "id": 1,
+                  "title": "The Lion King",
+                  "picture": "https://www.themoviedb.org/t/p/original/zRIram9fBEL3yCMh4gSPwfYpzY.jpg",
+                  "creation_date": "1994-06-24T03:00:00.000Z",
+                  "score": "4"
+              }
+            ]
+          }
+        }
+      },
+      "CharacterBodyUpdate": {
+        "required": ["id"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Mickey Mouse"
+          },
+          "picture": {
+            "type": "string",
+             "example": "https://static.wikia.nocookie.net/disney/images/c/cb/Mulan_ver1_xlg.jpg/revision/latest?cb=20160923003413&path-prefix=es"
+          },
+          "age": {
+            "type": "string",
+            "example": "adulto"
+          },
+          "weight": {
+            "type": "string",
+            "example": "50"
+          },
+          "movies": {
+            "type": "array",
+            "example": [3,5]
+          }
+        }
+      },
+      "allTypes": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": "1"
+          },
+          "type": {
+            "type": "string",
+            "example": "Serie"
+          }
+        }
+      },
+      "Type": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "Serie"
+          }
+        }
+      },
+      "TypeById": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example":"1"
+          },
+          "type": {
+            "type": "string",
+            "example": "Serie"
+          },
+          "createdAt": {
+            "type": "date",
+            "example": "2022-02-11T22:15:38.000Z"
+          },
+          "updatedAt": {
+            "type": "date",
+            "example": "2022-02-11T22:15:38.000Z"
+          }
+        }
+      },
+      "TypeBodyUpdate": {
+        "required": ["id"],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "Serie"
+          }
+        }
+      },
+      "allGenre": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": "1"
+          },
+          "genre": {
+            "type": "string",
+            "example": "Animation"
+          }
+        }
+      },
+      "Genre": {
+        "type": "object",
+        "properties": {
+          "genre": {
+            "type": "string",
+            "example": "Comedy"
+          }
+        }
+      },
+      "GenreById": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example":"1"
+          },
+          "genre": {
+            "type": "string",
+            "example": "Serie"
+          },
+          "createdAt": {
+            "type": "date",
+            "example": "2022-02-11T22:15:38.000Z"
+          },
+          "updatedAt": {
+            "type": "date",
+            "example": "2022-02-11T22:15:38.000Z"
+          }
+        }
+      },
+      "GenreBodyUpdate": {
+        "required": ["id"],
+        "type": "object",
+        "properties": {
+          "genre": {
+            "type": "string",
+            "example": "Fantasy"
+          }
+        }
+      },
+      "Users": {
+        "required": ["id"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": "2"
+          },
+          "name": {
+            "type": "string",
+            "example": "Javier"
+          },
+          "last": {
+            "type": "string",
+            "example": "Perez"
+          },
+          "email": {
+            "type": "string",
+            "example": "0.6333065036502268@email.com.ar"
+          },
+          "birthdate": {
+            "type": "date",
+            "example": "2001-06-16T03:00:00.000Z"
+          },
+          "password": {
+            "type": "string",
+            "example": "$2asddflO1o8iLy3ZTXDlFEawVWMOhzIS3za1GYtmQF5NyuB7.kos77/fdQ6"
+          },
+          "rol": {
+            "type": "string",
+            "example": "USER_ROLE"
+          },
+          "enable": {
+            "type": "boolean",
+            "example": true
+          },
+          "createdAt": {
+            "type": "date",
+            "example": "2022-01-13T22:03:53.859Z"
+          },
+          "updatedAt": {
+            "type": "date",
+            "example": "2022-01-13T22:03:53.859Z"
           }
         }
       },
